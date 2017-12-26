@@ -2,33 +2,30 @@ package com.example.hrapp.model
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey
 import org.springframework.data.cassandra.core.mapping.Table
+import java.util.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 
 @Table
-data class Employee(@PrimaryKey val id: String,
-                    val name: String,
-                    val age: Int,
-                    var department: String,
-                    var salary: Double)
+data class Employee (@PrimaryKey var id: String,
+                     var name: String,
+                     var age: Int,
+                     var department: String,
+                     var salary: Double)
 
-data class EmployeeDTO(val id: Int,
-                       @get:NotBlank val name: String,
+data class EmployeeDto(@get:NotBlank val name: String,
                        @get:Positive val age: Int,
-                       @get:NotBlank var department: String,
-                       @get:Positive var salary: Double) {
+                       @get:NotBlank val department: String,
+                       @get:Positive val salary: Double) {
+
+
 
     companion object {
-        fun newEmployee(employeeDTO: EmployeeDTO) =
-                Employee(employeeDTO.id.toString(),
-                        employeeDTO.name,
-                        employeeDTO.age,
-                        employeeDTO.department,
-                        employeeDTO.salary)
-
-        fun toDTO(employee: Employee) = EmployeeDTO(employee.id.toInt(), employee.name, employee.age, employee.department, employee.salary)
+        fun fromDto(dto: EmployeeDto) = Employee(UUID.randomUUID().toString(), dto.name, dto.age, dto.department, dto.salary)
+        fun toDto(employee: Employee) = EmployeeDto(employee.name, employee.age, employee.department, employee.salary)
     }
 }
 
 
-data class EmployeeUpdateReq(val department: String?, val salary: Double?)
+
+data class EmployeeUpdateReq(@get:NotBlank val department: String?, @get:Positive val salary: Double?)

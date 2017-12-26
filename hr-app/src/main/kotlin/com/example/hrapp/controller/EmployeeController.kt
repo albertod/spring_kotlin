@@ -1,6 +1,6 @@
 package com.example.hrapp.controller
 
-import com.example.hrapp.model.EmployeeDTO
+import com.example.hrapp.model.EmployeeDto
 import com.example.hrapp.model.EmployeeUpdateReq
 import com.example.hrapp.service.DepartmentService
 import com.example.hrapp.service.EmployeeService
@@ -20,11 +20,11 @@ class EmployeeController {
     lateinit var departmentService: DepartmentService
 
     @PostMapping("/employee")
-    fun createEmployee(@Valid @RequestBody employee: EmployeeDTO) = employeeService.createEmployee(employee)
+    fun createEmployee(@Valid @RequestBody employee: EmployeeDto) = employeeService.createEmployee(employee)
                 .map { newEmployee -> ResponseEntity.status(HttpStatus.CREATED).body(newEmployee)}
 
     @GetMapping("/employee/{id}")
-    fun getEmployee(@PathVariable("id") id: String) = employeeService.getEmployee(id).map { EmployeeDTO.toDTO(it) }
+    fun getEmployee(@PathVariable("id") id: String) = employeeService.getEmployee(id).map { EmployeeDto.toDto(it) }
 
     @GetMapping("/employee")
     fun getEmployees(@RequestParam("minAge", required = false) minAge: Int?,
